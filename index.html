@@ -166,6 +166,7 @@
       max-height: 100vh;
       object-fit: contain;
       border-radius: 8px;
+      z-index: 1;
     }
 
     .is-hidden {
@@ -174,8 +175,8 @@
 
     .lightbox-close {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      top: calc(env(safe-area-inset-top, 0px) + 14px);
+      right: calc(env(safe-area-inset-right, 0px) + 14px);
       width: 44px;
       height: 44px;
       border: 1px solid rgba(255, 255, 255, 0.35);
@@ -185,6 +186,10 @@
       font-size: 1.5rem;
       line-height: 1;
       cursor: pointer;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
     }
 
     body.no-scroll {
@@ -262,6 +267,90 @@
       section {
         padding: 72px 0;
       }
+
+      .hero {
+        min-height: auto;
+        padding: 72px 0 54px;
+      }
+
+      .card,
+      .about-box,
+      .contact-box,
+      .proof {
+        padding: 20px;
+      }
+
+      .proof {
+        line-height: 1.45;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: min(94%, var(--max));
+      }
+
+      section {
+        padding: 58px 0;
+      }
+
+      .hero h1 {
+        line-height: 1.15;
+        margin-bottom: 14px;
+      }
+
+      .hero p {
+        margin-bottom: 22px;
+      }
+
+      .section-intro {
+        margin-bottom: 22px;
+      }
+
+      .card,
+      .about-box,
+      .contact-box,
+      .proof {
+        padding: 16px;
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+      }
+
+      .contact-box p,
+      .about-box p,
+      .proof {
+        font-size: 0.98rem;
+      }
+
+      .links {
+        gap: 12px;
+      }
+
+      .lightbox {
+        padding: 8px;
+      }
+
+      .lightbox-close {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        width: min(95%, var(--max));
+      }
+
+      .hero {
+        padding-top: 62px;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -269,7 +358,7 @@
   <header class="hero" id="top">
     <div class="container">
       <h1>I turn teenagers into AI builders.</h1>
-      <p>SoCal's #1 teen AI program. 6 weeks. 3 real products. Portfolio pieces that stand out on college applications.</p>
+      <p>SoCal's #1 AI program for teens ages 16-18. 6 weeks. 3 real products. Portfolio pieces that stand out on college applications.</p>
       <a class="btn" href="#projects">See the Program</a>
     </div>
   </header>
@@ -288,7 +377,7 @@
           </article>
           <article class="card">
             <div class="icon" aria-hidden="true">🎙️</div>
-            <img class="product-shot" src="assets/videos/voice-agent.gif" alt="Voice Agent project demo" loading="lazy" decoding="async" tabindex="0" />
+            <video class="product-shot" src="assets/videos/voice-agent-demo.mov" aria-label="Voice Agent project demo" autoplay loop muted playsinline preload="metadata" tabindex="0"></video>
             <h3>Voice Agent</h3>
             <p>A voice AI that students can actually talk to. Perfect for language practice, interview prep, or study coaching.</p>
           </article>
@@ -321,7 +410,7 @@
         <div class="about-box">
           <p>Kyle Tran is the founder of SoCal's #1 teen AI bootcamp, helping students go from beginners to confident AI builders with real portfolio projects.</p>
           <p>Most teens learn <em>about</em> AI in school. At Lynx Society, they <em>build with</em> it.</p>
-          <p>In 6 weeks, students go from beginner to shipping 3 real AI products: chatbots, voice agents, and automation tools they can actually showcase.</p>
+          <p>In 6 weeks, students ages 16-18 go from beginner to shipping 3 real AI products: chatbots, voice agents, and automation tools they can actually showcase.</p>
           <p>After the program, students continue getting support from Kyle and keep lifetime access to the Lynx Society community, connecting them with young leaders and builders like them.</p>
           <p>The goal is simple: help students stand out by becoming confident builders.</p>
         </div>
@@ -340,7 +429,7 @@
             <a href="mailto:kyle7tran@gmail.com">kyle7tran@gmail.com</a>
           </div>
           <p class="contact-cta">🚀 Spring 2026 Cohort - 8 spots</p>
-          <p>The Spring 2026 cohort is limited to 8 ambitious teenagers building 3 AI products in 6 weeks: chatbots, voice agents, and automation tools.</p>
+          <p>The Spring 2026 cohort is limited to 8 ambitious teens ages 16-18 building 3 AI products in 6 weeks: chatbots, voice agents, and automation tools.</p>
           <p>Beta pricing is available for early applicants through March 31, 2026.</p>
           <p>Interested in joining the pilot cohort? Email <a href="mailto:kyle7tran@gmail.com">kyle7tran@gmail.com</a> to learn more.</p>
           <p class="contact-cta">Want to bring Lynx Society to your school or community? Let's talk.</p>
@@ -466,6 +555,10 @@
     });
 
     lightboxClose.addEventListener('click', closeLightbox);
+    lightboxClose.addEventListener('touchend', (event) => {
+      event.preventDefault();
+      closeLightbox();
+    });
     lightbox.addEventListener('click', (event) => {
       if (event.target === lightbox) {
         closeLightbox();
