@@ -140,6 +140,50 @@
       aspect-ratio: 16 / 10;
       object-fit: cover;
       background: #0f0f0f;
+      cursor: zoom-in;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.95);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    body.no-scroll {
+      overflow: hidden;
     }
 
     .card h3 {
@@ -233,19 +277,19 @@
         <div class="projects-grid">
           <article class="card">
             <div class="icon" aria-hidden="true">💬</div>
-            <img class="product-shot" src="assets/videos/ai-study-buddy.gif" alt="AI Chatbot project demo" loading="lazy" decoding="async" />
+            <img class="product-shot" src="assets/videos/ai-study-buddy.gif" alt="AI Chatbot project demo" loading="lazy" decoding="async" tabindex="0" />
             <h3>AI Chatbot</h3>
             <p>A custom chatbot students deploy and own, built to solve a real problem they care about.</p>
           </article>
           <article class="card">
             <div class="icon" aria-hidden="true">🎙️</div>
-            <img class="product-shot" src="assets/videos/voice-agent.gif" alt="Voice Agent project demo" loading="lazy" decoding="async" />
+            <img class="product-shot" src="assets/videos/voice-agent.gif" alt="Voice Agent project demo" loading="lazy" decoding="async" tabindex="0" />
             <h3>Voice Agent</h3>
             <p>A voice AI that students can actually talk to. Perfect for language practice, interview prep, or study coaching.</p>
           </article>
           <article class="card">
             <div class="icon" aria-hidden="true">⚙️</div>
-            <img class="product-shot" src="assets/videos/customer-support.gif" alt="Automation Tool project demo" loading="lazy" decoding="async" />
+            <img class="product-shot" src="assets/videos/customer-support.gif" alt="Automation Tool project demo" loading="lazy" decoding="async" tabindex="0" />
             <h3>Automation Tool</h3>
             <p>A smart automation that connects real tools students already use&mdash;saving time on homework, scheduling, or personal projects.</p>
           </article>
@@ -304,6 +348,11 @@
     <div class="container">© <span id="year"></span> Kyle Tran • Lynx Society</div>
   </footer>
 
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Close project preview">&times;</button>
+    <img id="lightbox-image" src="" alt="Expanded project demo" />
+  </div>
+
   <script>
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(
@@ -320,6 +369,49 @@
 
     sections.forEach((section) => observer.observe(section));
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const shots = document.querySelectorAll('.product-shot');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    const openLightbox = (img) => {
+      lightboxImage.src = img.src;
+      lightboxImage.alt = img.alt;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('no-scroll');
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+      document.body.classList.remove('no-scroll');
+    };
+
+    shots.forEach((img) => {
+      img.addEventListener('click', () => openLightbox(img));
+      img.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openLightbox(img);
+        }
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+        closeLightbox();
+      }
+    });
   </script>
 </body>
 </html>
