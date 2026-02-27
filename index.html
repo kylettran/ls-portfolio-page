@@ -249,19 +249,14 @@
       font-size: 0.85rem;
     }
 
-    .headshot-placeholder {
+    .headshot-image {
       width: 100%;
       aspect-ratio: 4 / 5;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.35), rgba(0, 0, 0, 0.95));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.75);
+      object-fit: cover;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      display: block;
     }
 
     .about-box p,
@@ -479,7 +474,12 @@
     <section id="about-kyle" class="reveal">
       <div class="container">
         <div class="about-card">
-          <span class="headshot-placeholder" aria-label="Headshot placeholder">Headshot</span>
+          <img
+            src="assets/images/KT%20professional%20photo.JPEG"
+            alt="Kyle Tran professional headshot"
+            class="headshot-image"
+            loading="lazy"
+          />
           <div class="about-card-content">
             <h2>About Kyle</h2>
             <p>i didn't go to school for this. i taught myself — chatbots, voice agents, automation tools, websites shipped on vercel. zapier led to chatgpt led to claude code led to realizing i could build real things that worked.</p>
