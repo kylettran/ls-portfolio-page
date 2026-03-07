@@ -436,10 +436,10 @@
             <p>A voice AI that students can actually talk to. Perfect for language practice, interview prep, or study coaching.</p>
           </article>
           <article class="card">
-            <div class="icon" aria-hidden="true">⚙️</div>
-            <video class="product-shot" src="assets/videos/customer-support-video.mov" aria-label="Automation Tool project demo" autoplay loop muted playsinline preload="metadata" tabindex="0"></video>
-            <h3>Automation Tool</h3>
-            <p>A smart automation that connects real tools students already use&mdash;saving time on homework, scheduling, or personal projects.</p>
+          <div class="icon" aria-hidden="true">⚙️</div>
+            <video class="product-shot" src="assets/videos/customer-support-video.mov" aria-label="Customer Support Agent project demo" autoplay loop muted playsinline preload="metadata" tabindex="0"></video>
+            <h3>Customer Support Agent</h3>
+            <p>Our team helps them build an AI support chat agent that connects real tools students already use&mdash;saving time on homework, scheduling, or personal projects.</p>
           </article>
         </div>
       </div>
@@ -451,7 +451,7 @@
         <div class="about-box">
           <p>Kyle Tran is the founder of SoCal's #1 youth AI bootcamp, helping students go from beginners to confident AI builders with real portfolio projects.</p>
           <p>Most youth learn <em>about</em> AI in school. At Lynx Combinator, they <em>build with</em> it.</p>
-          <p>In 6 weeks, students go from beginner to shipping 3 real AI products: chatbots, voice agents, and automation tools they can actually showcase.</p>
+          <p>In 6 weeks, students go from beginner to shipping 3 real AI products: chatbots, voice agents, and customer support agents they can actually showcase.</p>
           <p>After the program, students continue getting support from Kyle and keep lifetime access to the Lynx Combinator community, connecting them with young leaders and builders like them.</p>
           <p>The goal is simple: help students stand out by becoming confident builders.</p>
         </div>
@@ -489,7 +489,7 @@
           </a>
           <div class="about-card-content">
             <h2>About Kyle</h2>
-            <p>i didn't go to school for this. i taught myself — chatbots, voice agents, automation tools, websites shipped on vercel. zapier led to chatgpt led to claude code led to realizing i could build real things that worked.</p>
+          <p>i didn't go to school for this. i taught myself — chatbots, voice agents, customer support agents, websites shipped on vercel. zapier led to chatgpt led to claude code led to realizing i could build real things that worked.</p>
             <p>then i met a family. their kids were half my age — curious, energetic, asking questions nonstop. then something clicked.</p>
             <p>i thought about who i was at 16. junior year. AP classes. track and field. already racing against time without knowing where i was running. nobody handed me a roadmap. i had to find that years later, alone.</p>
             <p>those kids didn't have to wait that long.</p>
@@ -510,7 +510,7 @@
             <a href="mailto:kyle7tran@gmail.com">kyle7tran@gmail.com</a>
           </div>
           <p class="contact-cta">🚀 Spring 2026 Cohort - 8 spots</p>
-          <p>The Spring 2026 cohort is limited to 8 ambitious youth building 3 AI products in 6 weeks: chatbots, voice agents, and automation tools.</p>
+          <p>The Spring 2026 cohort is limited to 8 ambitious youth building 3 AI products in 6 weeks: chatbots, voice agents, and customer support agents.</p>
           <p>Beta pricing is available for early applicants through March 31, 2026.</p>
           <p>Interested in joining the pilot cohort? Email <a href="mailto:kyle7tran@gmail.com">kyle7tran@gmail.com</a> to learn more.</p>
           <p class="contact-cta">Want to bring Lynx Combinator to your school or community? Let's talk.</p>
@@ -651,6 +651,33 @@
         closeLightbox();
       }
     });
+
+    const mobilePlayQuery = window.matchMedia('(max-width: 900px)');
+    const handleMobileVideos = (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const watchMobileVideos = () => {
+      if (!mobilePlayQuery.matches) return;
+      const mobileObserver = new IntersectionObserver(handleMobileVideos, { threshold: 0.5 });
+      shots.forEach((media) => {
+        mobileObserver.observe(media);
+      });
+      const cleanup = () => {
+        mobileObserver.disconnect();
+        mobilePlayQuery.removeEventListener('change', cleanup);
+      };
+      mobilePlayQuery.addEventListener('change', cleanup, { once: true });
+    };
+
+    watchMobileVideos();
   </script>
 </body>
 </html>
