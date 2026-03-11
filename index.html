@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Kyle Tran - Founder of Lynx Combinator, SoCal's #1 youth AI bootcamp." />
   <title>Kyle Tran | Lynx Combinator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --bg: #0a0a0a;
@@ -406,6 +407,98 @@
         text-align: center;
       }
     }
+    .insights-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+    }
+
+    .insights-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .insight-card {
+      background: #0e1117;
+      border: 1px solid #1e2433;
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .chart-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+
+    .fit-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .fit-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .fit-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .fear-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .fear-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .fear-label {
+      font-size: 12px;
+      color: #94a3b8;
+      flex: 1;
+      padding-right: 12px;
+    }
+
+    .fear-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fear-bar {
+      height: 4px;
+      background: #a3e635;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .fear-count {
+      font-size: 12px;
+      color: #a3e635;
+      font-weight: 600;
+      min-width: 16px;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .insights-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -441,6 +534,30 @@
             <h3>Customer Support Agent</h3>
             <p>Our team helps them build an AI support chat agent that connects real tools students already use&mdash;saving time on homework, scheduling, or personal projects.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="insights" class="reveal">
+      <div class="container">
+        <h2>Customer Discovery Insights</h2>
+        <p class="section-intro">Live data from SoCal parent interviews — what they fear, who's on-target, and what drives the most signal.</p>
+        <div class="insights-grid">
+          <div class="insight-card">
+            <p class="chart-label">Response Volume by Theme</p>
+            <canvas id="chart-themes"></canvas>
+          </div>
+          <div class="insights-col">
+            <div class="insight-card">
+              <p class="chart-label">Customer Fit</p>
+              <canvas id="chart-fit"></canvas>
+              <div id="fit-legend" class="fit-legend"></div>
+            </div>
+            <div class="insight-card">
+              <p class="chart-label">Top 3 Fears</p>
+              <div id="top-fears"></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -678,6 +795,134 @@
     };
 
     watchMobileVideos();
+
+    // Customer Discovery Insights — live from Google Sheets
+    (async () => {
+      const API_KEY = 'AIzaSyACGOpiLL_SDa5QN9x8L_1Z8Ism02Yj_Ts';
+      const SPREADSHEET_ID = '1yojQ49yHg0PWI6whCrfNPe76uCidK9-Z4QH5tqx5SDA';
+      const BASE = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+      async function fetchRange(range) {
+        const url = `${BASE}/${SPREADSHEET_ID}/values/${range}?key=${API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Sheets error: ${res.status}`);
+        const data = await res.json();
+        return data.values ?? [];
+      }
+
+      try {
+        const [respRows, themeRows] = await Promise.all([
+          fetchRange('Responses!A2:F100'),
+          fetchRange('Themes!A2:D20'),
+        ]);
+
+        const responses = respRows.map(row => ({
+          target: (row[5] ?? '').toLowerCase() === 'true',
+        }));
+
+        const themeData = themeRows.map(row => ({
+          theme: row[0] ?? '',
+          short: row[1] ?? '',
+          count: Number(row[2] ?? 0),
+          target: (row[3] ?? '').toLowerCase() === 'true',
+        }));
+
+        const onTarget = responses.filter(r => r.target).length;
+        const offTarget = responses.length - onTarget;
+
+        // Bar chart — Response Volume by Theme
+        new Chart(document.getElementById('chart-themes').getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: themeData.map(d => d.short),
+            datasets: [{
+              data: themeData.map(d => d.count),
+              backgroundColor: themeData.map(d => d.target ? 'rgba(163,230,53,0.85)' : 'rgba(248,113,113,0.85)'),
+              borderRadius: 4,
+              barThickness: 14,
+            }],
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => {
+                    const d = themeData[ctx.dataIndex];
+                    return ` ${d.count} response${d.count !== 1 ? 's' : ''} · ${d.target ? 'On-target' : 'Off-target'}`;
+                  },
+                },
+                backgroundColor: '#0f172a',
+                borderColor: '#334155',
+                borderWidth: 1,
+                titleColor: '#f8fafc',
+                bodyColor: '#94a3b8',
+              },
+            },
+            scales: {
+              x: {
+                grid: { color: '#1e2433' },
+                ticks: { color: '#6b7280', font: { size: 11 } },
+                border: { display: false },
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: '#94a3b8', font: { size: 11 } },
+                border: { display: false },
+              },
+            },
+          },
+        });
+
+        // Donut chart — Customer Fit
+        new Chart(document.getElementById('chart-fit').getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['On-Target', 'Off-Target'],
+            datasets: [{
+              data: [onTarget, offTarget],
+              backgroundColor: ['#a3e635', '#f87171'],
+              borderWidth: 0,
+              hoverOffset: 4,
+            }],
+          },
+          options: {
+            responsive: true,
+            cutout: '65%',
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: { label: (ctx) => ` ${ctx.parsed} responses` },
+                backgroundColor: '#0f172a',
+                borderColor: '#334155',
+                borderWidth: 1,
+                titleColor: '#f8fafc',
+                bodyColor: '#94a3b8',
+              },
+            },
+          },
+        });
+
+        // Donut legend
+        const legend = document.getElementById('fit-legend');
+        [['On-Target', '#a3e635', onTarget], ['Off-Target', '#f87171', offTarget]].forEach(([name, color, val]) => {
+          legend.innerHTML += `<div class="fit-legend-item"><div class="fit-legend-dot" style="background:${color}"></div><span>${name} (${val})</span></div>`;
+        });
+
+        // Top 3 Fears
+        const fears = themeData.filter(d => d.target).slice(0, 3);
+        const maxCount = Math.max(...fears.map(d => d.count));
+        const fearsEl = document.getElementById('top-fears');
+        fears.forEach(d => {
+          fearsEl.innerHTML += `<div class="fear-item"><span class="fear-label">${d.short}</span><div class="fear-bar-wrap"><div class="fear-bar" style="width:${Math.round((d.count / maxCount) * 80)}px"></div><span class="fear-count">${d.count}</span></div></div>`;
+        });
+
+      } catch (e) {
+        console.error('Insights load error:', e);
+      }
+    })();
   </script>
 </body>
 </html>
