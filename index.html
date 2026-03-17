@@ -499,6 +499,31 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .parent-quote {
+      margin-top: 32px;
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      background: #0e1117;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .parent-quote blockquote {
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: #d1d5db;
+      line-height: 1.65;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    .parent-quote cite {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -558,6 +583,12 @@
               <div id="top-fears"></div>
             </div>
           </div>
+        </div>
+        <div class="parent-quote">
+          <blockquote>
+            "Tech and AI are moving fast, but helping kids build discernment, judgment, and confidence takes time, repetition, and trust. The program and your personal brand are tied together right now. Projects that show real-world application, consistency, and follow-through."
+          </blockquote>
+          <cite>— KV, SoCal Parent</cite>
         </div>
       </div>
     </section>
