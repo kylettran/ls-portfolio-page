@@ -216,7 +216,6 @@
     .hero-inner {
       position: relative;
       z-index: 2;
-      width: 100%;
     }
     .hero-title {
       font-size: clamp(2.8rem, 9vw, 5.8rem);
@@ -677,9 +676,8 @@
     .lightbox-close:hover { border-color: var(--cyan); box-shadow: var(--glow-cyan); }
 
     /* ── RESPONSIVE ── */
-    @media (min-width: 768px) {
-      .bottom-nav { display: none !important; }
-    }
+
+    /* Mobile (< 768px) */
     @media (max-width: 767px) {
       .bottom-nav { display: flex; }
       .top-nav-links { display: none; }
@@ -688,20 +686,45 @@
       .hero-cta { width: 100%; }
       section { padding: 80px 0; }
     }
+
+    /* Tablet + Desktop (≥ 768px) */
+    @media (min-width: 768px) {
+      .bottom-nav { display: none !important; }
+    }
+
+    /* Tablet landscape / small desktop (≥ 768px) */
+    @media (min-width: 768px) and (max-width: 899px) {
+      .projects-stack {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .proof-card { flex: 0 0 300px; }
+    }
+
+    /* Desktop (≥ 900px) */
     @media (min-width: 900px) {
       .projects-stack {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        gap: clamp(16px, 2vw, 28px);
       }
       .about-grid {
         flex-direction: row;
         align-items: flex-start;
-        gap: 56px;
+        gap: clamp(40px, 5vw, 72px);
       }
-      .about-photo-col { flex-shrink: 0; width: 280px; }
-      .proof-card { flex: 0 0 320px; }
+      .about-photo-col { flex-shrink: 0; width: clamp(240px, 22vw, 320px); }
+      .proof-card { flex: 0 0 clamp(280px, 24vw, 360px); }
     }
+
+    /* Large desktop (≥ 1280px) — give hero breathing room */
+    @media (min-width: 1280px) {
+      .hero { padding: 80px 0 120px; }
+      .hero-title { max-width: 72%; }
+    }
+
+    /* Small phones */
     @media (max-width: 420px) {
       .hero-title { font-size: 2.5rem; }
       .stat-pill-num { font-size: 1.4rem; }
