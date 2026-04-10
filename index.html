@@ -593,6 +593,68 @@
     .contact-note a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 200ms; }
     .contact-note a:hover { border-color: var(--cyan); }
 
+    /* ── FAQ ── */
+    #faq { background: linear-gradient(180deg, #050508 0%, #060710 100%); }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 780px;
+    }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 220ms, box-shadow 220ms;
+    }
+    .faq-item.open {
+      border-color: rgba(6,182,212,0.45);
+      box-shadow: 0 0 24px rgba(6,182,212,0.1);
+    }
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      line-height: 1.4;
+      min-height: 44px;
+    }
+    .faq-q:hover { color: var(--cyan); }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--cyan);
+      transition: transform 280ms ease;
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 360ms ease, padding 280ms ease;
+    }
+    .faq-a-inner {
+      padding: 0 24px 20px;
+      color: #c0cce0;
+      font-size: 0.95rem;
+      line-height: 1.78;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 16px;
+    }
+    .faq-a-inner strong { color: #fff; }
+    .faq-item.open .faq-a { max-height: 600px; }
+
     /* ── MARQUEE ── */
     .marquee-wrap {
       overflow: hidden;
@@ -743,6 +805,12 @@
         margin-top: -60px;
       }
       #about-kyle {
+        clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
+        padding-top: 130px;
+        padding-bottom: 130px;
+        margin-top: -60px;
+      }
+      #faq {
         clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%);
         padding-top: 130px;
         margin-top: -60px;
@@ -763,6 +831,7 @@
         <a href="#projects" class="top-nav-link">Program</a>
         <a href="#proof" class="top-nav-link">Proof</a>
         <a href="#about-kyle" class="top-nav-link">About</a>
+        <a href="#faq" class="top-nav-link">FAQ</a>
         <a href="#contact" class="btn top-nav-cta">Apply Now →</a>
       </div>
     </div>
@@ -934,6 +1003,114 @@
       </div>
     </section>
 
+    <!-- ── FAQ ── -->
+    <section id="faq" class="reveal">
+      <div class="container">
+        <span class="label">Parent FAQ</span>
+        <h2 class="section-title">Questions we <span class="gradient-text">hear most.</span></h2>
+        <p class="section-intro">Straight answers from Kyle — no sales pitch.</p>
+        <div class="faq-list">
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              What does this cost?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                The founding cohort is <strong>$1,500</strong>. That's beta pricing for the first 8 students. Once this cohort fills, the price goes up. This founding cohort pricing doesn't come back once we start graduating cohorts.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              My kid has zero coding experience — is that okay?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                That's exactly who this is built for. We're not training software engineers. We're teaching students to use AI tools the way professionals actually use them — going from idea to working product without writing code from scratch. <strong>Curiosity and willingness to figure things out matter more than any technical background.</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              How is this different from an online course or YouTube tutorials?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Three things you can't get from a video: <strong>deadlines, feedback, and someone who knows your kid by name.</strong> In this program, students ship real products on a real timeline with a real person reviewing their work. YouTube teaches you concepts. This program makes you finish something. There's a difference between watching someone cook and learning to cook.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              What's the weekly time commitment?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                About <strong>3 hours a week</strong>. I designed it this way on purpose. Your kid still has a life. Weekends are theirs. This runs alongside school, not instead of it. If they can find 3 hours in a week, they can finish the program.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              What do students actually walk away with?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Three working AI products: a custom chatbot, a voice agent, and a customer support agent. <strong>Not mockups — actual software they built, can demo, and own.</strong> They also present at Demo Day in front of people who build AI for a living. That's a college application section, a conversation starter, and proof that they can build things.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              Who's actually teaching this?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Me. I don't have a CS degree. What I do have is a track record of building these products, all self-taught. I built this organization, website, and program entirely on my own — <strong>living proof that you can build anything if you put your mind to it.</strong> I founded an AI safety education program and led AI operations at organizations before starting Lynx Combinator. I teach this because I went through the hard version of figuring it out alone, and I don't want another kid to wait as long as I did. My team also includes lead instructors, program coordinators, mentor network leads, and engineers.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              What if my kid falls behind or struggles?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                They come to office hours. I hold <strong>1-on-1 time specifically for students who are stuck</strong> — not a group Q&A, direct time with me to get their questions answered. No one falls behind because they didn't understand something the first time.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false">
+              Why only 8 spots?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-a" role="region">
+              <div class="faq-a-inner">
+                Because I'm not running a lecture. <strong>I'm leading a cohort.</strong> The whole model depends on me knowing every student's project, their blockers, and where they're getting stuck. At 8 students, I can do that well. When it's full, it's full.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ── CONTACT ── -->
     <section id="contact" class="reveal">
       <div class="container">
@@ -997,6 +1174,24 @@
   </div>
 
   <script>
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const btn = item.querySelector('.faq-q');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(o => {
+          o.classList.remove('open');
+          o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        // Open clicked (unless it was already open)
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
     // ── Year ──
     document.getElementById('year').textContent = new Date().getFullYear();
 
